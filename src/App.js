@@ -1,26 +1,59 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {Component} from 'react';
 import './App.css';
+import Form from 'react-bootstrap/Form';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+let marked = require("marked");
+
+class App extends Component {
+  constructor(props){
+    super(props);
+
+    this.state = {
+        markdown: ''
+      }
+
+    this.updateMarkdown = this.updateMarkdown.bind(this);
+  }
+
+  updateMarkdown (event){
+    this.setState({
+      markdown: event.target.value
+    });
+  }
+
+  render(){
+    let {markdown} = this.state;
+    console.log(markdown);
+    return (
+      <>
+        <div className="App container">
+          <div className="row">
+              <div className="col-md-12">
+                <h1 className= "text-center">Markdown Preview WebPage</h1>
+                <hr />
+              </div>
+              <div className="col-md-6">
+                <Form>
+                  <Form.Group controlId='formControlsTextarea'>
+                    <Form.Label>Markdown Area</Form.Label>
+                    <Form.Control as="textarea" placeholder="Enter Markdown" value = {this.state.markdown} onChange = {this.updateMarkdown}/>
+                  </Form.Group>
+                </Form>
+              </div>
+              <div className = "col-md-6">
+                <label>Markdown Result</label>
+                <div>
+                  <div dangerouslySetInnerHTML= {{__html: marked(markdown)}}></div>
+                </div>
+              </div>
+
+          </div>
+        </div>
+      </>
+    );
+  }
+
 }
 
 export default App;
